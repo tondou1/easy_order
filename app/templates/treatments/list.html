@@ -1,0 +1,18 @@
+<!doctype html>
+<title>自由診療メニュー一覧</title>
+<h2>自由診療メニュー一覧</h2>
+<a href="{{ url_for('treatments.create_treatment') }}">＋新規登録</a>
+<table border="1" cellpadding="4">
+  <tr><th>ID</th><th>メニュー名</th><th>料金</th><th>操作</th></tr>
+  {% for m in treatments %}
+  <tr>
+    <td>{{ m.id }}</td>
+    <td>{{ m.name }}</td>
+    <td>{{ m.price }}</td>
+    <td>
+      <a href="{{ url_for('treatments.edit_treatment', t_id=m.id) }}">編集</a> /
+      <a href="{{ url_for('treatments.delete_treatment', t_id=m.id) }}">削除</a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>

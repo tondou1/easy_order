@@ -1,0 +1,8 @@
+<!doctype html>
+<title>メニュー削除確認</title>
+<h2>メニュー削除確認</h2>
+<p>本当に "{{ treatment.name }}" を削除しますか？</p>
+<form method="post">
+  <button type="submit">削除する</button>
+</form>
+<a href="{{ url_for('treatments.list_treatments') }}">キャンセル</a>

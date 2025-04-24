@@ -1,0 +1,11 @@
+<!doctype html>
+<title>{{ title }}</title>
+<h2>{{ title }}</h2>
+<form method="post">
+  {{ form.hidden_tag() }}
+  {{ form.name.label }}<br>{{ form.name(size=30) }}<br>
+  {{ form.price.label }}<br>{{ form.price() }}<br>
+  {{ form.note.label }}<br>{{ form.note(rows=3, cols=40) }}<br><br>
+  {{ form.submit() }}
+</form>
+<a href="{{ url_for('treatments.list_treatments') }}">← 戻る</a>
