@@ -1,0 +1,14 @@
+<!doctype html>
+<title>{{ title }}</title>
+<h2>{{ title }}</h2>
+<form method="post">
+  {{ form.hidden_tag() }}
+  {{ form.chart_number.label }}<br>{{ form.chart_number(size=20) }}<br>
+  {{ form.name.label }}<br>{{ form.name(size=20) }}<br>
+  {{ form.furigana.label }}<br>{{ form.furigana(size=20) }}<br>
+  {{ form.birth_date.label }}<br>{{ form.birth_date() }} (YYYY-MM-DD)<br>
+  {{ form.gender.label }}<br>{{ form.gender() }}<br>
+  {{ form.emergency_contact.label }}<br>{{ form.emergency_contact(size=30) }}<br><br>
+  {{ form.submit() }}
+</form>
+<a href="{{ url_for('patients.list_patients') }}">← 戻る</a>

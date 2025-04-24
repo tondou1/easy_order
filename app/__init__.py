@@ -46,4 +46,8 @@ def create_app() -> Flask:
     from . import routes
     app.register_blueprint(routes.bp)        # /
 
+    from .patients import bp as patients_bp
+    app.register_blueprint(patients_bp)
+
+
     return app
