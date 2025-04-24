@@ -49,5 +49,7 @@ def create_app() -> Flask:
     from .patients import bp as patients_bp
     app.register_blueprint(patients_bp)
 
+    from .visits import bp as visits_bp
+    app.register_blueprint(visits_bp)
 
     return app

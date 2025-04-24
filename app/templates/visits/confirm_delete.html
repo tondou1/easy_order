@@ -1,0 +1,8 @@
+<!doctype html>
+<title>来院削除確認</title>
+<h2>来院削除確認</h2>
+<p>本当に削除しますか？ (ID {{ visit.id }}, 患者 {{ visit.patient.name }})</p>
+<form method="post">
+  <button type="submit">削除する</button>
+</form>
+<a href="{{ url_for('visits.list_visits', d=visit.visit_date) }}">キャンセル</a>

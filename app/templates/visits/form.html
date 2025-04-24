@@ -1,0 +1,10 @@
+<!doctype html>
+<title>{{ title }}</title>
+<h2>{{ title }}</h2>
+<form method="post">
+  {{ form.hidden_tag() }}
+  {{ form.patient_id.label }}<br>{{ form.patient_id() }}<br>
+  {{ form.visit_date.label }}<br>{{ form.visit_date() }}<br><br>
+  {{ form.submit() }}
+</form>
+<a href="{{ url_for('visits.list_visits') }}">← 戻る</a>

@@ -1,0 +1,24 @@
+<!doctype html>
+<title>来院一覧</title>
+<h2>来院一覧（{{ target_date }}）</h2>
+
+<form method="get">
+  <input type="date" name="d" value="{{ target_date }}">
+  <button type="submit">表示</button>
+</form>
+
+<a href="{{ url_for('visits.create_visit') }}">＋来院登録</a>
+<table border="1" cellpadding="4">
+  <tr><th>ID</th><th>患者</th><th>担当</th><th>操作</th></tr>
+  {% for v in visits %}
+  <tr>
+    <td>{{ v.id }}</td>
+    <td>{{ v.patient.name }}</td>
+    <td>{{ v.staff.username }}</td>
+    <td>
+      <a href="{{ url_for('visits.edit_visit', visit_id=v.id) }}">編集</a> /
+      <a href="{{ url_for('visits.delete_visit', visit_id=v.id) }}">削除</a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
