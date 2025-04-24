@@ -28,4 +28,8 @@ def create_app():
     from . import routes
     app.register_blueprint(routes.bp)
 
+    # これを追加（db.init_app の後ならどこでも OK）
+    from . import models   # ← 重要：モデルを読み込んでおかないと migrate が気付かない
+
+
     return app
