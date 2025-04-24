@@ -25,6 +25,12 @@
 
 <h3>合計: ¥{{ order.total_amount }}</h3>
 
+<p>
+    <a href="{{ url_for('orders.invoice', order_id=order.id) }}" target="_blank">
+      📄 明細書を表示 / 印刷
+    </a>
+</p>
+
 <hr>
 <h3>明細を追加</h3>
 <form method="post">

@@ -120,3 +120,12 @@ def toggle_payment(order_id):
 
     flash("支払ステータスを更新しました。")
     return redirect(url_for("orders.order_view", visit_id=order.visit_id))
+
+# ────────────────────────────────────────────────────────────
+# 明細書 (HTML)
+# ────────────────────────────────────────────────────────────
+@bp.route("/orders/<int:order_id>/invoice")
+@login_required
+def invoice(order_id):
+    order = Order.query.get_or_404(order_id)
+    return render_template("orders/invoice.html", order=order)

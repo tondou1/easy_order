@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>明細書 #{{ order.id }}</title>
+  <style>
+    body { font-family: sans-serif; margin: 40px; }
+    h1  { text-align: center; margin: 0 0 24px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+    th, td { border: 1px solid #999; padding: 6px 8px; text-align: left; }
+    th { background: #eee; }
+    .right { text-align: right; }
+    @media print {
+      a#print-btn { display: none; }   /* ボタンを隠す */
+    }
+  </style>
+</head>
+<body>
+  <a id="print-btn" href="#" onclick="window.print()">🖨 印刷</a>
+
+  <h1>自由診療 明細書</h1>
+
+  <p>
+    <strong>医療機関名:</strong> 〇〇クリニック<br>
+    <strong>日付:</strong> {{ order.visit.visit_date }}<br>
+    <strong>患者:</strong> {{ order.visit.patient.name }} (カルテ番号 {{ order.visit.patient.chart_number }})<br>
+  </p>
+
+  <table>
+    <tr><th style="width:55%">診療内容</th><th style="width:15%" class="right">単価</th><th style="width:15%" class="right">数量</th><th style="width:15%" class="right">小計</th></tr>
+    {% for it in order.items %}
+    <tr>
+      <td>{{ it.treatment.name }}</td>
+      <td class="right">¥{{ it.treatment.price }}</td>
+      <td class="right">{{ it.quantity }}</td>
+      <td class="right">¥{{ it.subtotal }}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+      <td colspan="3" class="right"><strong>合計</strong></td>
+      <td class="right"><strong>¥{{ order.total_amount }}</strong></td>
+    </tr>
+  </table>
+
+  <p>※ 自由診療につき保険点数は適用されません。</p>
+</body>
+</html>
