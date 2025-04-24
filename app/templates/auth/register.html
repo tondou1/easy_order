@@ -1,0 +1,10 @@
+<!doctype html>
+<title>ユーザー登録</title>
+<h2>ユーザー登録（管理者のみ）</h2>
+<form method="post">
+  {{ form.hidden_tag() }}
+  {{ form.username.label }} {{ form.username }}<br>
+  {{ form.password.label }} {{ form.password }}<br>
+  {{ form.role.label }} {{ form.role }}<br>
+  {{ form.submit }}
+</form>
