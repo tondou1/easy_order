@@ -1,0 +1,10 @@
+<!doctype html>
+<title>{{ title }}</title>
+<h2>{{ title }}</h2>
+<form method="post">
+  {{ form.hidden_tag() }}
+  {{ form.treatment_id.label }} {{ form.treatment_id() }}<br>
+  {{ form.quantity.label }} {{ form.quantity() }}<br><br>
+  {{ form.submit() }}
+</form>
+<a href="{{ url_for('orders.order_view', visit_id=form.treatment_id.data) }}">← 戻る</a>

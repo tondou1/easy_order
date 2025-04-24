@@ -1,0 +1,37 @@
+<!doctype html>
+<title>オーダー詳細</title>
+<h2>来院 ID {{ order.visit_id }} のオーダー</h2>
+<p>支払状況: {{ order.payment_status }}
+   [<a href="{{ url_for('orders.toggle_payment', order_id=order.id) }}">
+     切替
+   </a>]
+</p>
+
+<table border="1" cellpadding="4">
+  <tr><th>ID</th><th>メニュー</th><th>数量</th><th>小計</th><th>操作</th></tr>
+  {% for it in order.items %}
+  <tr>
+    <td>{{ it.id }}</td>
+    <td>{{ it.treatment.name }}</td>
+    <td>{{ it.quantity }}</td>
+    <td>{{ it.subtotal }}</td>
+    <td>
+      <a href="{{ url_for('orders.edit_item', item_id=it.id) }}">編集</a> /
+      <a href="{{ url_for('orders.delete_item', item_id=it.id) }}">削除</a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h3>合計: ¥{{ order.total_amount }}</h3>
+
+<hr>
+<h3>明細を追加</h3>
+<form method="post">
+  {{ form.hidden_tag() }}
+  {{ form.treatment_id.label }} {{ form.treatment_id() }}<br>
+  {{ form.quantity.label }} {{ form.quantity() }}<br><br>
+  {{ form.submit() }}
+</form>
+
+<p><a href="{{ url_for('visits.list_visits', d=order.visit.visit_date) }}">← 来院一覧へ戻る</a></p>

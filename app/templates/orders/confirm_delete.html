@@ -1,0 +1,8 @@
+<!doctype html>
+<title>明細削除確認</title>
+<h2>明細削除確認</h2>
+<p>ID {{ item.id }} {{ item.treatment.name }} ×{{ item.quantity }} を削除しますか？</p>
+<form method="post">
+  <button type="submit">削除する</button>
+</form>
+<a href="{{ url_for('orders.order_view', visit_id=item.order.visit_id) }}">キャンセル</a>

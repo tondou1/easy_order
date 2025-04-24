@@ -55,4 +55,7 @@ def create_app() -> Flask:
     from .treatments import bp as treatments_bp
     app.register_blueprint(treatments_bp)
 
+    from .orders import bp as orders_bp
+    app.register_blueprint(orders_bp)
+
     return app
