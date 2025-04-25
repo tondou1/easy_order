@@ -1,14 +1,46 @@
-<!doctype html>
-<title>{{ title }}</title>
-<h2>{{ title }}</h2>
-<form method="post">
-  {{ form.hidden_tag() }}
-  {{ form.chart_number.label }}<br>{{ form.chart_number(size=20) }}<br>
-  {{ form.name.label }}<br>{{ form.name(size=20) }}<br>
-  {{ form.furigana.label }}<br>{{ form.furigana(size=20) }}<br>
-  {{ form.birth_date.label }}<br>{{ form.birth_date() }} (YYYY-MM-DD)<br>
-  {{ form.gender.label }}<br>{{ form.gender() }}<br>
-  {{ form.emergency_contact.label }}<br>{{ form.emergency_contact(size=30) }}<br><br>
-  {{ form.submit() }}
-</form>
-<a href="{{ url_for('patients.list_patients') }}">← 戻る</a>
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+  <h2>{{ title }}</h2>
+
+  <form method="post" class="mb-3">
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3">
+      {{ form.chart_number.label(class="form-label") }}
+      {{ form.chart_number(class="form-control", size=20) }}
+    </div>
+
+    <div class="mb-3">
+      {{ form.name.label(class="form-label") }}
+      {{ form.name(class="form-control", size=20) }}
+    </div>
+
+    <div class="mb-3">
+      {{ form.furigana.label(class="form-label") }}
+      {{ form.furigana(class="form-control", size=20) }}
+    </div>
+
+    <div class="mb-3">
+      {{ form.birth_date.label(class="form-label") }}
+      {{ form.birth_date(class="form-control", placeholder="YYYY-MM-DD") }}
+    </div>
+
+    <div class="mb-3">
+      {{ form.gender.label(class="form-label") }}
+      {{ form.gender(class="form-select") }}
+    </div>
+
+    <div class="mb-3">
+      {{ form.emergency_contact.label(class="form-label") }}
+      {{ form.emergency_contact(class="form-control", size=30) }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+  </form>
+
+  <a href="{{ url_for('patients.list_patients') }}" class="btn btn-secondary">
+    ← 戻る
+  </a>
+{% endblock %}

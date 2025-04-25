@@ -1,8 +1,12 @@
-<!doctype html>
-<title>メニュー削除確認</title>
-<h2>メニュー削除確認</h2>
-<p>本当に "{{ treatment.name }}" を削除しますか？</p>
-<form method="post">
-  <button type="submit">削除する</button>
-</form>
-<a href="{{ url_for('treatments.list_treatments') }}">キャンセル</a>
+{% extends "base.html" %}
+{% block title %}メニュー削除確認{% endblock %}
+
+{% block content %}
+  <h2>メニュー削除確認</h2>
+  <p>本当に "{{ treatment.name }}" を削除しますか？</p>
+
+  <form method="post" class="mb-3">
+    <button type="submit" class="btn btn-danger">削除する</button>
+    <a href="{{ url_for('treatments.list_treatments') }}" class="btn btn-secondary ms-2">キャンセル</a>
+  </form>
+{% endblock %}

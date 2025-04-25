@@ -42,7 +42,7 @@ def login():
             nxt = request.args.get("next")
             # 外部サイトへの open redirect を防ぐ
             if not nxt or urlparse(nxt).netloc != "":
-                nxt = url_for("main.index")
+                nxt = url_for('visits.list_visits')
             return redirect(nxt)
 
         flash("ユーザー名またはパスワードが間違っています。")

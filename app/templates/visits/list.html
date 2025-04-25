@@ -1,24 +1,48 @@
-<!doctype html>
-<title>来院一覧</title>
-<h2>来院一覧（{{ target_date }}）</h2>
+{% extends "base.html" %}
+{% block title %}来院一覧{% endblock %}
 
-<form method="get">
-  <input type="date" name="d" value="{{ target_date }}">
-  <button type="submit">表示</button>
-</form>
+{% block content %}
+  <h2>来院一覧（{{ target_date }}）</h2>
 
-<a href="{{ url_for('visits.create_visit') }}">＋来院登録</a>
-<table border="1" cellpadding="4">
-  <tr><th>ID</th><th>患者</th><th>担当</th><th>操作</th></tr>
-  {% for v in visits %}
-  <tr>
-    <td>{{ v.id }}</td>
-    <td>{{ v.patient.name }}</td>
-    <td>{{ v.staff.username }}</td>
-    <td>
-      <a href="{{ url_for('visits.edit_visit', visit_id=v.id) }}">編集</a> /
-      <a href="{{ url_for('visits.delete_visit', visit_id=v.id) }}">削除</a>
-    </td>
-  </tr>
-  {% endfor %}
-</table>
+  <form method="get" class="mb-3">
+    <input type="date" name="d" value="{{ target_date }}"
+           class="form-control d-inline-block w-auto">
+    <button type="submit" class="btn btn-primary">表示</button>
+  </form>
+
+  <a href="{{ url_for('visits.create_visit') }}"
+     class="btn btn-success mb-3">＋ 来院登録</a>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>患者</th>
+        <th>担当</th>
+        <th>オーダー</th>   {# ここを追加 #}
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for v in visits %}
+      <tr>
+        <td>{{ v.id }}</td>
+        <td>{{ v.patient.name }}</td>
+        <td>{{ v.staff.username }}</td>
+        <td>
+          <a href="{{ url_for('orders.order_view', visit_id=v.id) }}"
+             class="btn btn-sm btn-info">
+            オーダー
+          </a>
+        </td>
+        <td>
+          <a href="{{ url_for('visits.edit_visit',   visit_id=v.id) }}"
+             class="btn btn-sm btn-warning">編集</a>
+          <a href="{{ url_for('visits.delete_visit', visit_id=v.id) }}"
+             class="btn btn-sm btn-danger ms-1">削除</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

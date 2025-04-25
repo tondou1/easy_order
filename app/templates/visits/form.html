@@ -1,10 +1,26 @@
-<!doctype html>
-<title>{{ title }}</title>
-<h2>{{ title }}</h2>
-<form method="post">
-  {{ form.hidden_tag() }}
-  {{ form.patient_id.label }}<br>{{ form.patient_id() }}<br>
-  {{ form.visit_date.label }}<br>{{ form.visit_date() }}<br><br>
-  {{ form.submit() }}
-</form>
-<a href="{{ url_for('visits.list_visits') }}">← 戻る</a>
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+  <h2>{{ title }}</h2>
+
+  <form method="post" class="mb-3">
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3">
+      {{ form.patient_id.label(class="form-label") }}
+      {{ form.patient_id(class="form-select d-inline-block w-auto") }}
+    </div>
+
+    <div class="mb-3">
+      {{ form.visit_date.label(class="form-label") }}
+      {{ form.visit_date(class="form-control d-inline-block w-auto") }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+  </form>
+
+  <a href="{{ url_for('visits.list_visits') }}" class="btn btn-secondary">
+    ← 戻る
+  </a>
+{% endblock %}

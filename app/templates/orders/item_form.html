@@ -1,10 +1,26 @@
-<!doctype html>
-<title>{{ title }}</title>
-<h2>{{ title }}</h2>
-<form method="post">
-  {{ form.hidden_tag() }}
-  {{ form.treatment_id.label }} {{ form.treatment_id() }}<br>
-  {{ form.quantity.label }} {{ form.quantity() }}<br><br>
-  {{ form.submit() }}
-</form>
-<a href="{{ url_for('orders.order_view', visit_id=form.treatment_id.data) }}">← 戻る</a>
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+  <h2>{{ title }}</h2>
+  
+  <form method="post" class="mb-3">
+    {{ form.hidden_tag() }}
+    
+    <div class="mb-3">
+      {{ form.treatment_id.label(class="form-label") }}
+      {{ form.treatment_id(class="form-select") }}
+    </div>
+    
+    <div class="mb-3">
+      {{ form.quantity.label(class="form-label") }}
+      {{ form.quantity(class="form-control", min="1") }}
+    </div>
+    
+    <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+  </form>
+  
+  <a href="{{ url_for('orders.order_view', visit_id=form.treatment_id.data) }}" class="btn btn-secondary">
+    ← 戻る
+  </a>
+{% endblock %}
