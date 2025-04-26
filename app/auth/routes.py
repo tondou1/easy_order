@@ -35,7 +35,7 @@ def login():
 
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+        user = User.query.filter_by(login_id=form.login_id.data).first()
         if user and user.check_password(form.password.data):
             login_user(user)
 
@@ -70,12 +70,13 @@ def register():
     form = RegisterForm()
     if form.validate_on_submit():
         # 同名ユーザーの重複チェック
-        if User.query.filter_by(username=form.username.data).first():
+        if User.query.filter_by(login_id=form.login_id.data).first():
             flash("そのユーザー名は既に存在します。")
         else:
             user = User(
-                username=form.username.data,
-                role=form.role.data         # "admin" / "staff"
+                login_id=form.login_id.data,
+                name=form.name.data,
+                role=form.role.data                # "admin" / "staff"
             )
             user.set_password(form.password.data)
 

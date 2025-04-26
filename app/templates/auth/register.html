@@ -1,10 +1,30 @@
-<!doctype html>
-<title>ユーザー登録</title>
-<h2>ユーザー登録（管理者のみ）</h2>
-<form method="post">
-  {{ form.hidden_tag() }}
-  {{ form.username.label }} {{ form.username }}<br>
-  {{ form.password.label }} {{ form.password }}<br>
-  {{ form.role.label }} {{ form.role }}<br>
-  {{ form.submit }}
-</form>
+{% extends "base.html" %}
+{% block title %}ユーザー登録{% endblock %}
+
+{% block content %}
+  <h2>ユーザー登録（管理者のみ）</h2>
+  <form method="post">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+      {{ form.login_id.label(class="form-label") }}
+      {{ form.login_id(class="form-control") }}
+    </div>
+    <div class="mb-3">
+      {{ form.name.label(class="form-label") }}
+      {{ form.name(class="form-control") }}
+    </div>
+    <div class="mb-3">
+      {{ form.role.label(class="form-label") }}
+      {{ form.role(class="form-select") }}
+    </div>
+    <div class="mb-3">
+      {{ form.password.label(class="form-label") }}
+      {{ form.password(class="form-control") }}
+    </div>
+    <div class="mb-3">
+      {{ form.password2.label(class="form-label") }}
+      {{ form.password2(class="form-control") }}
+    </div>
+    <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+  </form>
+{% endblock %}
