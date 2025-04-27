@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}ユーザー編集{% endblock %}
+
+{% block content %}
+  <h2>ユーザー編集</h2>
+  <form method="post" class="mb-4">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+      {{ form.login_id.label(class="form-label") }}
+      {{ form.login_id(class="form-control") }}
+    </div>
+    <div class="mb-3">
+      {{ form.name.label(class="form-label") }}
+      {{ form.name(class="form-control") }}
+    </div>
+    <div class="mb-3">
+      {{ form.role.label(class="form-label") }}
+      {{ form.role(class="form-select") }}
+    </div>
+    <div class="mb-3">
+      {{ form.password.label(class="form-label") }}
+      {{ form.password(class="form-control") }}
+      <small class="form-text text-muted">変更する場合のみ入力してください</small>
+    </div>
+    <div class="mb-3">
+      {{ form.password2.label(class="form-label") }}
+      {{ form.password2(class="form-control") }}
+    </div>
+    <button type="submit" class="btn btn-success">{{ form.submit.label.text }}</button>
+    <a href="{{ url_for('auth.register') }}" class="btn btn-secondary ms-2">キャンセル</a>
+  </form>
+{% endblock %}

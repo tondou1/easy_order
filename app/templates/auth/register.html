@@ -3,28 +3,72 @@
 
 {% block content %}
   <h2>ユーザー登録（管理者のみ）</h2>
-  <form method="post">
+  <form method="post" class="mb-4">
     {{ form.hidden_tag() }}
-    <div class="mb-3">
-      {{ form.login_id.label(class="form-label") }}
-      {{ form.login_id(class="form-control") }}
-    </div>
-    <div class="mb-3">
-      {{ form.name.label(class="form-label") }}
-      {{ form.name(class="form-control") }}
-    </div>
+
     <div class="mb-3">
       {{ form.role.label(class="form-label") }}
       {{ form.role(class="form-select") }}
     </div>
+
+    <div class="mb-3">
+      {{ form.name.label(class="form-label") }}
+      {{ form.name(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+      {{ form.login_id.label(class="form-label") }}
+      {{ form.login_id(class="form-control") }}
+    </div>
+
     <div class="mb-3">
       {{ form.password.label(class="form-label") }}
       {{ form.password(class="form-control") }}
     </div>
+
     <div class="mb-3">
       {{ form.password2.label(class="form-label") }}
       {{ form.password2(class="form-control") }}
     </div>
+
     <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
   </form>
+
+  <h3>登録済みユーザー</h3>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>ログインID</th>
+        <th>ユーザー名</th>
+        <th>権限</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td>{{ u.id }}</td>
+        <td>{{ u.login_id }}</td>
+        <td>{{ u.name }}</td>
+        <td>{{ u.role }}</td>
+        <td>
+          <a href="{{ url_for('auth.edit_user', user_id=u.id) }}"
+             class="btn btn-sm btn-warning">編集</a>
+          {% if u.id != current_user.id %}
+          <form method="post"
+                action="{{ url_for('auth.delete_user', user_id=u.id) }}"
+                style="display:inline-block;">
+            <button type="submit"
+                    class="btn btn-sm btn-danger"
+                    onclick="return confirm('削除してもよいですか？');">
+              削除
+            </button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

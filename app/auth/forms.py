@@ -25,3 +25,24 @@ class RegisterForm(FlaskForm):
         ]
     )
     submit = SubmitField("ユーザー作成")
+
+class EditUserForm(FlaskForm):
+    login_id  = StringField(
+        "ログインID", validators=[DataRequired(), Length(max=64)]
+    )
+    name      = StringField(
+        "ユーザー名", validators=[DataRequired(), Length(max=64)]
+    )
+    role      = SelectField(
+        "権限",
+        choices=[("admin","管理者"),("staff","スタッフ")],
+        validators=[DataRequired()]
+    )
+    password  = PasswordField(
+        "パスワード（変更する場合）"
+    )
+    password2 = PasswordField(
+        "パスワード確認",
+        validators=[EqualTo("password", message="パスワードが一致しません")]
+    )
+    submit    = SubmitField("更新")
