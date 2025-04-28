@@ -63,7 +63,7 @@ class Patient(db.Model):
 class Visit(db.Model):
     __tablename__ = "visits"
 
-    id         = db.Column(db.Integer, db.ForeignKey("visits.id"), primary_key=True)
+    id         = db.Column(db.Integer, primary_key=True)
     patient_id = db.Column(db.Integer, db.ForeignKey("patients.id"), nullable=False)
     user_id    = db.Column(db.Integer, db.ForeignKey("users.id"),    nullable=False)  # 受付担当
     visit_date = db.Column(db.Date, nullable=False)
