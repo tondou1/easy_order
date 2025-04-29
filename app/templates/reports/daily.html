@@ -4,11 +4,12 @@
 {% block content %}
   <h2>日報 {{ date }}</h2>
 
-    <p>
-        <a href="{{ url_for('reports.daily_report_pdf', d=date) }}" class="btn btn-outline-secondary mb-3">
-          🖨 印刷用表示
-        </a>
-    </p>
+  <p>
+    <a href="{{ url_for('reports.daily_report_pdf', d=date) }}"
+       class="btn btn-outline-secondary mb-3">
+      🖨 印刷用表示
+    </a>
+  </p>
 
   <form method="get" class="mb-3">
     <input type="date" name="d" value="{{ date }}">
@@ -18,9 +19,9 @@
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th>来院ID</th>
+        <th>#</th>
+        <th>カルテ番号</th>
         <th>患者</th>
-        <th>担当</th>
         <th>診療内容</th>
         <th>金額</th>
       </tr>
@@ -28,9 +29,9 @@
     <tbody>
       {% for r in report %}
       <tr>
-        <td>{{ r.visit_id }}</td>
+        <td>{{ loop.index }}</td>                    {# 決済順の番号 #}
+        <td>{{ r.chart_number }}</td>               {# カルテ番号 #}
         <td>{{ r.patient }}</td>
-        <td>{{ r.staff }}</td>
         <td>
           {% if r.treatments %}
             {{ r.treatments | join(', ') }}

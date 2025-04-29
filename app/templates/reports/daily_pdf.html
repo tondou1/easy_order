@@ -10,14 +10,12 @@
     th, td { border: 1px solid #999; padding: 6px 8px; text-align: left; }
     th { background: #eee; }
     .right { text-align: right; }
-
-    @media print {
-      a#print-btn { display: none; }
-    }
+    @media print { a#print-btn { display: none; } }
   </style>
 </head>
 <body>
-  <a id="print-btn" href="#" onclick="window.print()" style="text-decoration:none; font-size:1.2em; margin-bottom:16px; display:inline-block;">
+  <a id="print-btn" href="#" onclick="window.print()"
+     style="text-decoration:none; font-size:1.2em; margin-bottom:16px; display:inline-block;">
     🖨 印刷
   </a>
 
@@ -31,9 +29,9 @@
   <table>
     <thead>
       <tr>
-        <th>来院ID</th>
+        <th>#</th>
+        <th>カルテ番号</th>
         <th>患者</th>
-        <th>担当</th>
         <th>診療内容</th>
         <th class="right">金額</th>
       </tr>
@@ -41,9 +39,9 @@
     <tbody>
       {% for r in report %}
       <tr>
-        <td>{{ r.visit_id }}</td>
+        <td>{{ loop.index }}</td>
+        <td>{{ r.chart_number }}</td>
         <td>{{ r.patient }}</td>
-        <td>{{ r.staff }}</td>
         <td>
           {% if r.treatments %}
             {{ r.treatments | join(', ') }}
@@ -61,6 +59,5 @@
     </tbody>
   </table>
 
-  <p>※ この日の日報を表示しています。</p>
 </body>
 </html>
