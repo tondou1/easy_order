@@ -1,4 +1,5 @@
 # app/models.py
+
 from datetime import date
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -8,11 +9,11 @@ from . import db, login_manager   # __init__.py で用意済み
 class User(UserMixin, db.Model):
     __tablename__ = "users"
 
-    id            = db.Column(db.Integer, primary_key=True)
-    login_id = db.Column(db.String(64), unique=True, index=True)
-    name     = db.Column(db.String(64))
-    password_hash = db.Column(db.String(128), nullable=False)
-    role          = db.Column(db.String(10), nullable=False, default="staff")  # "admin" / "staff"
+    id             = db.Column(db.Integer, primary_key=True)
+    login_id       = db.Column(db.String(64), unique=True, index=True)
+    name           = db.Column(db.String(64))
+    password_hash  = db.Column(db.String(128), nullable=False)
+    role           = db.Column(db.String(10), nullable=False, default="staff")  # "admin" / "staff"
 
     # 関連
     visits = db.relationship("Visit",  back_populates="staff",   cascade="all, delete-orphan")
@@ -38,13 +39,13 @@ def load_user(user_id):
 class Patient(db.Model):
     __tablename__ = "patients"
 
-    id               = db.Column(db.Integer, primary_key=True)
-    chart_number     = db.Column(db.String(20),  unique=True, nullable=False)
-    name             = db.Column(db.String(64),  nullable=False)
-    furigana         = db.Column(db.String(64))
-    birth_date       = db.Column(db.Date)
-    gender           = db.Column(db.String(10))
-    emergency_contact= db.Column(db.String(64))
+    id                = db.Column(db.Integer, primary_key=True)
+    chart_number      = db.Column(db.String(20),  unique=True, nullable=False)
+    name              = db.Column(db.String(64),  nullable=False)
+    furigana          = db.Column(db.String(64))
+    birth_date        = db.Column(db.Date)
+    gender            = db.Column(db.String(10))
+    emergency_contact = db.Column(db.String(64))
 
     visits = db.relationship("Visit", back_populates="patient", cascade="all, delete-orphan")
 
@@ -76,10 +77,13 @@ class Visit(db.Model):
 class Treatment(db.Model):
     __tablename__ = "treatments"
 
-    id    = db.Column(db.Integer, primary_key=True)
-    name  = db.Column(db.String(64), nullable=False)
-    price = db.Column(db.Integer,    nullable=False)   # 税込み／抜きは後で調整
-    note  = db.Column(db.String(256))
+    id         = db.Column(db.Integer, primary_key=True)
+    name       = db.Column(db.String(64),  nullable=False)
+    price      = db.Column(db.Integer,     nullable=False)   # 税込み／抜きは後で調整
+    note       = db.Column(db.String(256))
+
+    # 有効／無効フラグ（論理削除用）
+    active     = db.Column(db.Boolean, default=True, nullable=False)
 
     order_items = db.relationship("OrderItem", back_populates="treatment")
 
@@ -88,17 +92,17 @@ class Treatment(db.Model):
 class Order(db.Model):
     __tablename__ = "orders"
 
-    id            = db.Column(db.Integer, primary_key=True)
-    visit_id      = db.Column(db.Integer, db.ForeignKey("visits.id"), nullable=False)
-    user_id       = db.Column(db.Integer, db.ForeignKey("users.id"),  nullable=False)  # 会計担当
-    created_at    = db.Column(db.Date, nullable=False)
-    total_amount  = db.Column(db.Integer, default=0)
-    payment_status= db.Column(db.String(20), default="unpaid")   # unpaid / paid
-    note          = db.Column(db.String(256))
+    id             = db.Column(db.Integer, primary_key=True)
+    visit_id       = db.Column(db.Integer, db.ForeignKey("visits.id"), nullable=False)
+    user_id        = db.Column(db.Integer, db.ForeignKey("users.id"),  nullable=False)  # 会計担当
+    created_at     = db.Column(db.Date, nullable=False)
+    total_amount   = db.Column(db.Integer, default=0)
+    payment_status = db.Column(db.String(20), default="unpaid")   # unpaid / paid
+    note           = db.Column(db.String(256))
 
-    visit   = db.relationship("Visit", back_populates="orders")
-    cashier = db.relationship("User",  back_populates="orders")
-    items   = db.relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
+    visit    = db.relationship("Visit", back_populates="orders")
+    cashier  = db.relationship("User",  back_populates="orders")
+    items    = db.relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
 
     def recalc_total(self):
         self.total_amount = sum(item.subtotal for item in self.items)
@@ -114,8 +118,8 @@ class OrderItem(db.Model):
     quantity     = db.Column(db.Integer, nullable=False, default=1)
     subtotal     = db.Column(db.Integer, nullable=False)
 
-    order     = db.relationship("Order",     back_populates="items")
-    treatment = db.relationship("Treatment", back_populates="order_items")
+    order       = db.relationship("Order",     back_populates="items")
+    treatment   = db.relationship("Treatment", back_populates="order_items")
 
     def set_subtotal(self):
         self.subtotal = self.treatment.price * self.quantity
