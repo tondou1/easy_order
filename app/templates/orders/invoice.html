@@ -1,47 +1,246 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
-<head>
-  <meta charset="utf-8">
-  <title>明細書 #{{ order.id }}</title>
-  <style>
-    body { font-family: sans-serif; margin: 40px; }
-    h1  { text-align: center; margin: 0 0 24px; }
-    table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
-    th, td { border: 1px solid #999; padding: 6px 8px; text-align: left; }
-    th { background: #eee; }
-    .right { text-align: right; }
-    @media print {
-      a#print-btn { display: none; }   /* ボタンを隠す */
-    }
-  </style>
-</head>
-<body>
-  <a id="print-btn" href="#" onclick="window.print()">🖨 印刷</a>
+  <head>
+    <meta charset="utf-8" />
+    <title>明細書 #{{ order.id }}</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 40px;
+      }
+      h1 {
+        text-align: center;
+        margin: 0 0 24px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 16px;
+      }
+      th,
+      td {
+        border: 1px solid #999;
+        padding: 6px 8px;
+        text-align: left;
+      }
+      th {
+        background: #eee;
+      }
+      .right {
+        text-align: right;
+      }
+      .button {
+        display: inline-block;
+        padding: 8px 16px;
+        margin: 10px 0;
+        font-size: 16px;
+        text-align: center;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+      .button:hover {
+        background-color: #0056b3;
+      }
+      .button:active {
+        background-color: #004085;
+      }
+      .comment {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #555;
+      }
+      @media print {
+        a#print-btn,
+        a#setting-btn {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a id="setting-btn" href="#" class="button" onclick="openSettingsModal()"
+      >⚙ 内容設定</a
+    >
+    <a id="print-btn" href="#" class="button" onclick="checkBeforePrint()"
+      >🖨 印刷</a
+    >
 
-  <h1>自由診療 明細書</h1>
+    <h1>明細書</h1>
 
-  <p>
-    <strong>医療機関名:</strong> 〇〇クリニック<br>
-    <strong>日付:</strong> {{ order.visit.visit_date }}<br>
-    <strong>患者:</strong> {{ order.visit.patient.name }} (カルテ番号 {{ order.visit.patient.chart_number }})<br>
-  </p>
+    <p>
+      <strong>医療機関名:</strong> <span id="clinic-name-display"></span><br />
+      <strong>電話番号:</strong> <span id="phone-number-display"></span><br />
+      <strong>日付:</strong> {{ order.visit.visit_date }}<br />
+      <strong>患者:</strong> {{ order.visit.patient.name }} (カルテ番号 {{
+      order.visit.patient.chart_number }})<br />
+    </p>
 
-  <table>
-    <tr><th style="width:55%">診療内容</th><th style="width:15%" class="right">単価</th><th style="width:15%" class="right">数量</th><th style="width:15%" class="right">小計</th></tr>
-    {% for it in order.items %}
-    <tr>
-      <td>{{ it.treatment.name }}</td>
-      <td class="right">¥{{ it.treatment.price }}</td>
-      <td class="right">{{ it.quantity }}</td>
-      <td class="right">¥{{ it.subtotal }}</td>
-    </tr>
-    {% endfor %}
-    <tr>
-      <td colspan="3" class="right"><strong>合計</strong></td>
-      <td class="right"><strong>¥{{ order.total_amount }}</strong></td>
-    </tr>
-  </table>
+    <table>
+      <tr>
+        <th style="width: 55%">診療内容</th>
+        <th style="width: 15%" class="right">単価</th>
+        <th style="width: 15%" class="right">数量</th>
+        <th style="width: 15%" class="right">小計</th>
+      </tr>
+      {% for it in order.items %}
+      <tr>
+        <td>{{ it.treatment.name }}</td>
+        <td class="right">¥{{ it.treatment.price }}</td>
+        <td class="right">{{ it.quantity }}</td>
+        <td class="right">¥{{ it.subtotal }}</td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td colspan="3" class="right"><strong>合計</strong></td>
+        <td class="right"><strong>¥{{ order.total_amount }}</strong></td>
+      </tr>
+    </table>
 
-  <p>※ 自由診療につき保険点数は適用されません。</p>
-</body>
+    <!-- コメント部分をここに配置 -->
+    <div class="comment">
+      <label for="comment-display">コメント:</label>
+      <span id="comment-display">自由診療につき健康保険は適応されません</span>
+    </div>
+
+    <!-- モーダル -->
+    <div class="modal fade" id="settingsModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">内容設定</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="settings-form">
+              <div class="mb-3">
+                <label for="clinic-name" class="form-label">医療機関名</label>
+                <input type="text" class="form-control" id="clinic-name" />
+              </div>
+              <div class="mb-3">
+                <label for="phone-number" class="form-label">電話番号</label>
+                <input type="text" class="form-control" id="phone-number" />
+              </div>
+              <div class="mb-3">
+                <label for="comment" class="form-label">コメント</label>
+                <textarea class="form-control" id="comment" rows="3">
+自由診療につき健康保険は適応されません</textarea
+                >
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              閉じる
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="applyChanges()"
+            >
+              適用
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 印刷前確認モーダル -->
+    <div class="modal fade" id="confirmPrintModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">内容設定が未完了です</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>内容設定が完了していません。印刷を続けますか？</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="button" onclick="printAnyway()">
+              印刷を続ける
+            </button>
+            <button
+              type="button"
+              class="button"
+              onclick="openSettingsModalAndClosePrint()"
+            >
+              内容設定をする
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      let isContentSet = false;
+
+      function openSettingsModal() {
+        const modal = new bootstrap.Modal(
+          document.getElementById("settingsModal")
+        );
+        modal.show();
+      }
+
+      function openSettingsModalAndClosePrint() {
+        // 印刷のモーダルを閉じて、設定のモーダルを開く
+        bootstrap.Modal.getInstance(
+          document.getElementById("confirmPrintModal")
+        ).hide();
+        openSettingsModal();
+      }
+
+      function applyChanges() {
+        const name = document.getElementById("clinic-name").value;
+        const phone = document.getElementById("phone-number").value;
+        const comment = document.getElementById("comment").value;
+
+        document.getElementById("clinic-name-display").innerText = name;
+        document.getElementById("phone-number-display").innerText = phone;
+        document.getElementById("comment-display").innerText = comment;
+
+        isContentSet = true;
+        bootstrap.Modal.getInstance(
+          document.getElementById("settingsModal")
+        ).hide();
+      }
+
+      function checkBeforePrint() {
+        if (!isContentSet) {
+          const modal = new bootstrap.Modal(
+            document.getElementById("confirmPrintModal")
+          );
+          modal.show();
+        } else {
+          window.print();
+        }
+      }
+
+      function printAnyway() {
+        bootstrap.Modal.getInstance(
+          document.getElementById("confirmPrintModal")
+        ).hide();
+        setTimeout(() => window.print(), 300);
+      }
+    </script>
+  </body>
 </html>
