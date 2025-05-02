@@ -1,1 +1,146 @@
-git完了
+easy_order:.
+│  .env
+│  .gitignore
+│  akkis.txt
+│  easy_order.db
+│  requirements.txt
+│  run.py
+│
+├─app
+│  │  models.py
+│  │  routes.py
+│  │  __init__.py
+│  │
+│  ├─auth
+│  │  │  forms.py
+│  │  │  routes.py
+│  │  │  __init__.py
+│  │  │
+│  │  └─__pycache__
+│  │          forms.cpython-312.pyc
+│  │          forms.cpython-313.pyc
+│  │          routes.cpython-312.pyc
+│  │          routes.cpython-313.pyc
+│  │          __init__.cpython-312.pyc
+│  │          __init__.cpython-313.pyc
+│  │
+│  ├─orders
+│  │  │  forms.py
+│  │  │  routes.py
+│  │  │  __init__.py
+│  │  │
+│  │  └─__pycache__
+│  │          forms.cpython-312.pyc
+│  │          forms.cpython-313.pyc
+│  │          routes.cpython-312.pyc
+│  │          routes.cpython-313.pyc
+│  │          __init__.cpython-312.pyc
+│  │          __init__.cpython-313.pyc
+│  │
+│  ├─patients
+│  │  │  forms.py
+│  │  │  routes.py
+│  │  │  __init__.py
+│  │  │
+│  │  └─__pycache__
+│  │          forms.cpython-312.pyc
+│  │          forms.cpython-313.pyc
+│  │          routes.cpython-312.pyc
+│  │          routes.cpython-313.pyc
+│  │          __init__.cpython-312.pyc
+│  │          __init__.cpython-313.pyc
+│  │
+│  ├─reports
+│  │  │  routes.py
+│  │  │  __init__.py
+│  │  │
+│  │  └─__pycache__
+│  │          routes.cpython-312.pyc
+│  │          __init__.cpython-312.pyc
+│  │
+│  ├─templates
+│  │  │  base.html
+│  │  │
+│  │  ├─auth
+│  │  │      edit_user.html
+│  │  │      login.html
+│  │  │      register.html
+│  │  │
+│  │  ├─orders
+│  │  │      confirm_delete.html
+│  │  │      invoice.html
+│  │  │      item_form.html
+│  │  │      order.html
+│  │  │
+│  │  ├─patients
+│  │  │      confirm_delete.html
+│  │  │      form.html
+│  │  │      list.html
+│  │  │
+│  │  ├─reports
+│  │  │      daily.html
+│  │  │      daily_pdf.html
+│  │  │
+│  │  ├─treatments
+│  │  │      confirm_delete.html
+│  │  │      form.html
+│  │  │      list.html
+│  │  │
+│  │  └─visits
+│  │          confirm_delete.html
+│  │          form.html
+│  │          list.html
+│  │
+│  ├─treatments
+│  │  │  forms.py
+│  │  │  routes.py
+│  │  │  __init__.py
+│  │  │
+│  │  └─__pycache__
+│  │          forms.cpython-312.pyc
+│  │          forms.cpython-313.pyc
+│  │          routes.cpython-312.pyc
+│  │          routes.cpython-313.pyc
+│  │          __init__.cpython-312.pyc
+│  │          __init__.cpython-313.pyc
+│  │
+│  ├─visits
+│  │  │  forms.py
+│  │  │  routes.py
+│  │  │  __init__.py
+│  │  │
+│  │  └─__pycache__
+│  │          forms.cpython-312.pyc
+│  │          forms.cpython-313.pyc
+│  │          routes.cpython-312.pyc
+│  │          routes.cpython-313.pyc
+│  │          __init__.cpython-312.pyc
+│  │          __init__.cpython-313.pyc
+│  │
+│  └─__pycache__
+│          models.cpython-312.pyc
+│          models.cpython-313.pyc
+│          routes.cpython-312.pyc
+│          routes.cpython-313.pyc
+│          __init__.cpython-312.pyc
+│          __init__.cpython-313.pyc
+│
+├─migrations
+│  │  alembic.ini
+│  │  env.py
+│  │  README
+│  │  script.py.mako
+│  │
+│  ├─versions
+│  │  │  3aff5c9a5565_initial_tables.py
+│  │  │  532eab31bc95_add_active_flag_to_treatment.py
+│  │  │  e441dadd5e04_add_login_id_and_name_to_user.py
+│  │  │
+│  │  └─__pycache__
+│  │          3aff5c9a5565_initial_tables.cpython-313.pyc
+│  │
+│  └─__pycache__
+│          env.cpython-313.pyc
+│
+└─__pycache__
+        run.cpython-313.pyc

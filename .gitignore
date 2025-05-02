@@ -7,3 +7,5 @@ __pycache__/
 .flaskenv
 __pycache__/
 *.pyc
+__pycache__/
+*.pyc

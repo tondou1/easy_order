@@ -5,7 +5,6 @@ from . import bp
 from ..models import Visit, Order   # Order をインポート
 
 def _build_report_for_date(target):
-    # Order.id 昇順（決済順）で取得
     orders = (
         Order.query
         .join(Visit)
@@ -17,15 +16,20 @@ def _build_report_for_date(target):
     report = []
     for o in orders:
         v = o.visit
+        patient = v.patient
+        visit_count = len(patient.visits)  # ← ここで来院回数を取得
+
         items = [f"{it.treatment.name}×{it.quantity}" for it in o.items]
         report.append({
-            "chart_number": v.patient.chart_number,  # ← ここでカルテ番号をセット
+            "chart_number": v.patient.chart_number,
             "patient":      v.patient.name,
+            "visit_count":  visit_count,  # ← 追加
             "treatments":   items,
             "amount":       o.total_amount,
         })
     total_amount = sum(r["amount"] for r in report)
     return report, total_amount
+
 
 @bp.route("/daily")
 @login_required
