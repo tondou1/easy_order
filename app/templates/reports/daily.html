@@ -1,51 +1,53 @@
-{% extends "base.html" %}
-{% block title %}日報 {{ date }}{% endblock %}
+{% extends "base.html" %} {% block title %}日報 {{ date }}{% endblock %} {%
+block content %}
+<h2>日報 {{ date }}</h2>
 
-{% block content %}
-  <h2>日報 {{ date }}</h2>
+<p>
+  <a
+    href="{{ url_for('reports.daily_report_pdf', d=date) }}"
+    class="btn btn-outline-secondary mb-3"
+  >
+    🖨 印刷用表示
+  </a>
+</p>
 
-  <p>
-    <a href="{{ url_for('reports.daily_report_pdf', d=date) }}"
-       class="btn btn-outline-secondary mb-3">
-      🖨 印刷用表示
-    </a>
-  </p>
+<form method="get" class="mb-3">
+  <input type="date" name="d" value="{{ date }}" />
+  <button type="submit" class="btn btn-primary">表示</button>
+</form>
 
-  <form method="get" class="mb-3">
-    <input type="date" name="d" value="{{ date }}">
-    <button type="submit" class="btn btn-primary">表示</button>
-  </form>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>カルテ番号</th>
+      <th>患者</th>
+      <th>来院回数</th>
+      <th>診療内容</th>
+      <th>金額</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in report %}
+    <tr>
+      <td>{{ loop.index }}</td>
+      {# 決済順の番号 #}
+      <td>{{ r.chart_number }}</td>
+      {# カルテ番号 #}
+      <td>{{ r.patient }}</td>
+      <td>{{ r.visit_count }}回目</td>
 
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>カルテ番号</th>
-        <th>患者</th>
-        <th>診療内容</th>
-        <th>金額</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for r in report %}
-      <tr>
-        <td>{{ loop.index }}</td>                    {# 決済順の番号 #}
-        <td>{{ r.chart_number }}</td>               {# カルテ番号 #}
-        <td>{{ r.patient }}</td>
-        <td>
-          {% if r.treatments %}
-            {{ r.treatments | join(', ') }}
-          {% else %}
-            （なし）
-          {% endif %}
-        </td>
-        <td>¥{{ r.amount }}</td>
-      </tr>
-      {% endfor %}
-      <tr>
-        <td colspan="4" class="text-end"><strong>合計</strong></td>
-        <td><strong>¥{{ total_amount }}</strong></td>
-      </tr>
-    </tbody>
-  </table>
+      <td>
+        {% if r.treatments %} {{ r.treatments | join(', ') }} {% else %}
+        （なし） {% endif %}
+      </td>
+      <td>¥{{ r.amount }}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+      <td colspan="5" class="text-end"><strong>合計</strong></td>
+      <td><strong>¥{{ total_amount }}</strong></td>
+    </tr>
+  </tbody>
+</table>
 {% endblock %}
